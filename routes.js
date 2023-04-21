@@ -3,12 +3,14 @@ const todos = require("./todos");
 const request = require("request")
 const router = express.Router();
 
+// console.log(process.env.OPEN_API_KEY)
+
 // openai ChatGPT
 const { Configuration, OpenAIApi } = require("openai");
 const cfg_ChatGPT = new Configuration({
     // organization: "org-4Z0UrLBQSmmedIP6FCkKaqCX",
     organization : "org-4Z0UrLBQSmmedIP6FCkKaqCX",
-    apiKey: "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",
+    apiKey: "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",
 });
 const openai = new OpenAIApi(cfg_ChatGPT);
 const response = openai.listEngines();
@@ -51,7 +53,7 @@ let translate = (query, from, to) => new Promise((res)=>{
         
     } else {
         // res.status(trans_response.statusCode).end();
-        console.log('error = 123' + trans_response.statusCode);
+        console.log('error ' + trans_response.statusCode);
     }
 });
 })
@@ -82,4 +84,7 @@ router.get("/GPT", (req, res) => {
     });
   }));
 });
+
+
 module.exports = router;
+
