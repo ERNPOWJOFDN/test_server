@@ -66,7 +66,7 @@ router.get("/GPT", (req, res) => {
     var options = {
       url: 'https://openapi.naver.com/v1/papago/n2mt',
       form: {'source':'en', 'target': 'ko', 'text': query},
-      headers: {'X-Naver-Client-Id':'ZkXTCOcrWgVJWM9h3uP4', 'X-Naver-Client-Secret': 'EMuUjqK7am'}
+      headers: {'X-Naver-Client-Id':process.env.NAVER_API_ID, 'X-Naver-Client-Secret': process.env.NAVER_CLIENT_SECRET}
     };
     request.post(options, function (error, trans_response, body) {
       if (!error && trans_response.statusCode == 200) {
