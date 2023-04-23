@@ -5,20 +5,16 @@ const router = express.Router();
 
 // console.log(process.env.OPEN_API_KEY)
 
+
+
 // openai ChatGPT
 const { Configuration, OpenAIApi } = require("openai");
 const cfg_ChatGPT = new Configuration({
-    // organization: "org-4Z0UrLBQSmmedIP6FCkKaqCX",
-    organization : "org-4Z0UrLBQSmmedIP6FCkKaqCX",
-    apiKey: "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",
+    organization : process.env.OPEN_API_ORG,
+    apiKey: process.env.OPEN_API_KEY,
 });
 const openai = new OpenAIApi(cfg_ChatGPT);
 const response = openai.listEngines();
-
-var client_id = 'ZkXTCOcrWgVJWM9h3uP4';
-var client_secret = 'EMuUjqK7am';
-var query = "I go.";
-
 
 
 router.get("/todos", (req, res) => {
@@ -44,7 +40,7 @@ let translate = (query, from, to) => new Promise((res)=>{
   var options = {
     url: 'https://openapi.naver.com/v1/papago/n2mt',
     form: {'source':from, 'target':to, 'text': query},
-    headers: {'X-Naver-Client-Id':'ZkXTCOcrWgVJWM9h3uP4', 'X-Naver-Client-Secret': 'EMuUjqK7am'}
+    headers: {'X-Naver-Client-Id':process.env.NAVER_API_ID, 'X-Naver-Client-Secret': process.env.NAVER_CLIENT_SECRET}
   };
   request.post(options, function (error, trans_response, body) {
     if (!error && trans_response.statusCode == 200) {
@@ -61,7 +57,6 @@ let translate = (query, from, to) => new Promise((res)=>{
 
 
 router.get("/GPT", (req, res) => {
-  console.log(req.query.q)
   translate(req.query.q, 'ko', 'en')
   .then((t_res) =>ChatGPT(t_res.message.result.translatedText))
   .then((g_res) => new Promise(() => {
